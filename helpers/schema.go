@@ -227,6 +227,18 @@ var GitopsAgentResourceImporter = &schema.ResourceImporter{
 	},
 }
 
+var GitopsRepoCertResourceImporter = &schema.ResourceImporter{
+	State: func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+		parts := strings.Split(d.Id(), "/")
+		d.Set("org_id", parts[0])
+		d.Set("project_id", parts[1])
+		d.Set("agent_id", parts[3])
+		d.SetId(parts[2])
+
+		return []*schema.ResourceData{d}, nil
+	},
+}
+
 // OrgResourceImporter defines the importer configuration for all organization level resources.
 // The id used for the import should be in the format <org_id>/<identifier>
 var OrgResourceImporter = &schema.ResourceImporter{
